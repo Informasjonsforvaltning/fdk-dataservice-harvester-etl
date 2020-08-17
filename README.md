@@ -1,2 +1,2 @@
-# dataservice-etl
-ETL type utilities related to our dataservice catalogue
+# fdk-dataservice-harvester-etl
+ETL type utilities related to our dataservice harvester
