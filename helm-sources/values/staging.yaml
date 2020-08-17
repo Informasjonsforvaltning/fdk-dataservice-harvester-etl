@@ -1,0 +1,3 @@
+#DValues for staging environment
+NAMESPACE: staging
+ELASTIC_INDEX: acat_v82

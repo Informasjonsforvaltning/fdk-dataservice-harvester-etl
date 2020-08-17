@@ -1,0 +1,3 @@
+#DValues for demo environment
+NAMESPACE: demo
+ELASTIC_INDEX: acat_v68

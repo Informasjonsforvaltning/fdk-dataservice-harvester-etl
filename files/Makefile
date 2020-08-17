@@ -1,0 +1,21 @@
+.PHONY: test
+all: extract transform load
+
+fusekidata:
+	echo "Extracting fusekidata...."
+	python3 ./extract_fusekidata.py -o ./tmp/
+
+extract_dataservices:
+	echo "Extracting dataservices...."
+	python3 ./extract_dataservices.py -o ./tmp/
+
+transform_dataservices:
+	echo "Transforming dataservices...."
+	python3 -u ./transform_dataservices.py -o ./tmp/
+
+load_dataservices:
+	echo "Loading dataservices...."
+	python3 ./load_dataservices.py -o ./tmp/
+
+clean:
+	rm ./tmp/*.json

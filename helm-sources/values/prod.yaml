@@ -1,0 +1,3 @@
+#DValues for prod environment
+NAMESPACE: prod
+ELASTIC_INDEX: acat_v69
