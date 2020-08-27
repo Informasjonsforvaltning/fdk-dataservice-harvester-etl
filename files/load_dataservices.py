@@ -14,9 +14,9 @@ args = parser.parse_args()
 
 
 dataservicesGraph = None
-with open("extract_fusekidata.py") as fuseki_file:
+with open("dataservices.ttl") as fuseki_file:
     dataservicesGraph = Graph().parse(data=fuseki_file.read(), format='turtle')
-metabaseURI = os.environ['DATASERVICE_BASE_URI'] + '/dataservices/'
+metabaseURI = os.environ['DATASERVICE_HARVESTER_BASE_URI'] + '/dataservices/'
 catalogrecordRef = URIRef("http://www.w3.org/ns/dcat#CatalogRecord")
 fusekibaseURI = 'http://fdk-fuseki-service:8080/fuseki/dataservice-meta'
 
@@ -28,18 +28,19 @@ with open(inputfileName) as json_file:
     # Load the publisher by posting the data:
     totalLoaded = 0
     totalFailed = 0
-    for dataset in data:
-        elasticID = dataset["doc"]["id"]
-        elasticURI = dataset["doc"]["uri"]
-        elasticFirst = dataset["doc"]["harvest"]["firstHarvested"]
-        elasticLast = dataset["doc"]["harvest"]["lastHarvested"]
-        elasticChanged = dataset["doc"]["harvest"]["changed"]
 
-        for recordURI in dataservicesGraph.subjects(
-                predicate=RDF.type, object=catalogrecordRef
-        ):
-            primaryTopicURI = dataservicesGraph.value(recordURI, FOAF.primaryTopic)
-            if primaryTopicURI and primaryTopicURI.toPython() == elasticURI:
+    for recordURI in dataservicesGraph.subjects(
+            predicate=RDF.type, object=catalogrecordRef
+    ):
+        primaryTopicURI = dataservicesGraph.value(recordURI, FOAF.primaryTopic)
+        endpointDescription = dataservicesGraph.value(primaryTopicURI, URIRef("http://www.w3.org/ns/dcat#endpointDescription"))
+        if endpointDescription:
+            elastic_dataservice = data.get(endpointDescription.toPython())
+            if elastic_dataservice:
+                elasticID = elastic_dataservice["doc"]["id"]
+                elasticFirst = elastic_dataservice["doc"]["harvest"]["firstHarvested"]
+                elasticChanged = elastic_dataservice["doc"]["harvest"]["changed"]
+
                 g = Graph()
                 resourceURI = URIRef(metabaseURI + elasticID)
                 partOfURI = dataservicesGraph.value(recordURI, DCTERMS.isPartOf)
@@ -50,23 +51,23 @@ with open(inputfileName) as json_file:
                 g.add((resourceURI, DCTERMS.issued, Literal(elasticFirst, datatype=XSD.dateTime)))
                 for date in elasticChanged:
                     g.add((resourceURI, DCTERMS.modified, Literal(date, datatype=XSD.dateTime)))
-                g.add((resourceURI, FOAF.primaryTopic, URIRef(elasticURI)))
-                identifier = dataservicesGraph.value(recordURI, DCTERMS.identifier)
+                g.add((resourceURI, FOAF.primaryTopic, primaryTopicURI))
+                old_identifier = dataservicesGraph.value(recordURI, DCTERMS.identifier)
 
                 try:
                     response = requests.put(
                         fusekibaseURI + '?graph=' + elasticID, data=g.serialize(), headers={"Content-type": "application/rdf+xml"}
                     )
                     response.raise_for_status()
-                    print("Response.status: " + str(response.status_code) + " -- " + elasticURI)
+                    print("Response.status: " + str(response.status_code) + " -- " + endpointDescription.toPython())
                     if response.status_code == "201":
                         totalLoaded += 1
                     try:
                         response = requests.delete(
-                            fusekibaseURI + '?graph=' + identifier
+                            fusekibaseURI + '?graph=' + old_identifier
                         )
                         response.raise_for_status()
-                        print("Delete response.status: " + str(response.status_code) + " -- " + elasticURI)
+                        print("Delete response.status: " + str(response.status_code) + " -- " + endpointDescription.toPython())
                     except requests.HTTPError as err:
                         logging.error(f'Http delete error response from reference-data: ({err})')
                     except Exception as err:

@@ -11,13 +11,15 @@ def transform(data):
     # Transforming according to rules in README
     array = data["hits"]["hits"]
     print (len(array))
-    newArray = []
+    transformed = {}
     for dataservice in array:
-        if dataservice["_source"].get("harvest"):
-            dataservice2 = {"doc": {"id": dataservice["_id"], "uri": dataservice["_source"]["uri"],"harvest": {"firstHarvested": dataservice["_source"].get("harvest")["firstHarvested"], "lastHarvested": dataservice["_source"].get("harvest")["lastHarvested"], "changed": dataservice["_source"].get("harvest")["changed"]}}}
-            newArray.append(dataservice2)
-    transformed = newArray
-    print ("Total to be transformed: ", len(newArray))
+        dataservice2 = {"doc": {"id": dataservice["_id"],
+                                "uri": dataservice["_source"]["uri"],
+                                "harvest": {"firstHarvested": dataservice["_source"].get("harvest")["firstHarvested"],
+                                            "lastHarvested": dataservice["_source"].get("harvest")["lastHarvested"],
+                                            "changed": dataservice["_source"].get("harvest")["changed"]}}}
+        transformed[dataservice.get("apiSpecUrl")] = dataservice2
+    print ("Total to be transformed: ", len(transformed))
     return transformed
 
 

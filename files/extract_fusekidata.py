@@ -11,8 +11,8 @@ args = parser.parse_args()
 
 url = 'http://fdk-dataservice-harvester:8080/catalogs'
 
-print("Posting to the following url: ", url)
+print("Getting from the following url: ", url)
 # Load the publisher by posting the data:
-r = requests.post(url)
+r = requests.get(url)
 with open(args.outputdirectory + 'dataservices.ttl', 'w', encoding="utf-8") as outfile:
     json.dump(r.json(), outfile, ensure_ascii=False, indent=4)

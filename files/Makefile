@@ -5,15 +5,15 @@ fusekidata:
 	echo "Extracting fusekidata...."
 	python3 ./extract_fusekidata.py -o ./tmp/
 
-extract_dataservices:
+extract:
 	echo "Extracting dataservices...."
 	python3 ./extract_dataservices.py -o ./tmp/
 
-transform_dataservices:
+transform:
 	echo "Transforming dataservices...."
 	python3 -u ./transform_dataservices.py -o ./tmp/
 
-load_dataservices:
+load:
 	echo "Loading dataservices...."
 	python3 ./load_dataservices.py -o ./tmp/
 

@@ -3,12 +3,12 @@ entries:
   fdk-dataservice-harvester-etl:
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2020-08-17T08:48:49.614069227+02:00"
+    created: "2020-08-27T15:36:26.241700204+02:00"
     description: Config for FDK Dataservice harvester etl
-    digest: 331ac8945ca538301bbf3a2e1d9f37ca6908c45bffb997cdaee8017558bf71d6
+    digest: 4d61577941028fc9b97fe52b707f022f444e55e5a757d1fd6447577a0c3e57ba
     home: https://github.com/Informasjonsforvaltning/fdk-dataservice-harvester-etl
     name: fdk-dataservice-harvester-etl
     urls:
     - https://informasjonsforvaltning.github.io/fdk-dataservice-harvester-etl/fdk-dataservice-harvester-etl-0.1.0.tgz
     version: 0.1.0
-generated: "2020-08-17T08:48:49.613676924+02:00"
+generated: "2020-08-27T15:36:26.23925033+02:00"
