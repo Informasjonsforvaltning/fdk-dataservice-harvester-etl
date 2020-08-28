@@ -1,7 +1,9 @@
 name: Build and deploy to staging on push
 
 on:
-  - push
+  pull_request:
+    branches:
+      - master
 
 jobs:
   build-and-deploy:
@@ -26,7 +28,7 @@ jobs:
     - run: gcloud auth configure-docker
 
     - name: Build Docker image with GitHub commit sha tag and staging tag
-      run: docker build . -t eu.gcr.io/digdir-fdk-infra/fdk-dataservice-harvester-etl:staging_latest
+      run: docker build . -t eu.gcr.io/digdir-fdk-infra/fdk-dataservice-harvester-etl:staging_latest -t eu.gcr.io/digdir-fdk-infra/fdk-dataservice-harvester-etl:$GITHUB_SHA
 
     - name: Publish docker image to Google Cloud
       run: docker -- push eu.gcr.io/digdir-fdk-infra/fdk-dataservice-harvester-etl
@@ -40,7 +42,6 @@ jobs:
           helm repo add fdk-dataservice-harvester-etl https://informasjonsforvaltning.github.io/fdk-dataservice-harvester-etl/
           helm fetch --untar --untardir ./helm fdk-dataservice-harvester-etl/fdk-dataservice-harvester-etl
           helm template --set DOCKER_IMAGE_NAME="eu.gcr.io/digdir-fdk-infra/fdk-dataservice-harvester-etl:$GITHUB_SHA" -f ./helm-sources/values/staging.yaml ./helm/fdk-dataservice-harvester-etl/  > ./kubectlapply.yaml
-        ## ${{ github.event.client_payload.sha }}"
           chmod o+w ./kubectlapply.yaml
           cat kubectlapply.yaml
 

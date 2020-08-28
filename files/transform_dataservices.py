@@ -7,22 +7,34 @@ parser.add_argument('-o', '--outputdirectory', help="the path to the directory o
 args = parser.parse_args()
 
 
-def transform(data):
+def transform(extract):
     # Transforming according to rules in README
-    array = data["hits"]["hits"]
-    print (len(array))
-    newArray = []
+    array = extract["hits"]["hits"]
+    print(len(array))
+    transformed = {}
     for dataservice in array:
-        if dataservice["_source"].get("harvest"):
-            dataservice2 = {"doc": {"id": dataservice["_id"], "uri": dataservice["_source"]["uri"],"harvest": {"firstHarvested": dataservice["_source"].get("harvest")["firstHarvested"], "lastHarvested": dataservice["_source"].get("harvest")["lastHarvested"], "changed": dataservice["_source"].get("harvest")["changed"]}}}
-            newArray.append(dataservice2)
-    transformed = newArray
-    print ("Total to be transformed: ", len(newArray))
+        first = dataservice["_source"].get("harvest")["firstHarvested"]
+        dataservice2 = {"doc": {"id": dataservice["_id"],
+                                "harvest": {"firstHarvested": first,
+                                            "lastHarvested": dataservice["_source"].get("harvest")["lastHarvested"],
+                                            "changed": mapchanged(dataservice["_source"].get("harvest"), first)
+                                            }
+                                }
+                        }
+        transformed[dataservice["_source"].get("apiSpecUrl")] = dataservice2
+    print("Total to be transformed: ", len(transformed))
     return transformed
 
 
+def mapchanged(harvest, first):
+    array = []
+    if harvest.get("changed"):
+        return harvest.get("changed")
+    return array.append(first)
+
+
 inputfileName = args.outputdirectory + "dataservices.json"
-outputfileName = args.outputdirectory + "dataservice_metadata.json"
+outputfileName = args.outputdirectory + "dataservices_metadata.json"
 with open(inputfileName) as json_file:
     data = json.load(json_file)
     # Transform the organization object to publihser format:

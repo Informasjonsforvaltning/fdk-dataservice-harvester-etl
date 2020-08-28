@@ -21,12 +21,12 @@ spec:
     spec:
       containers:
       - env:
-          - name: ELASTIC_DATASERVICE_INDEX
+          - name: ELASTIC_ACAT_INDEX
             valueFrom:
               secretKeyRef:
                 name: common-{{ required "Missing value NAMESPACE" .Values.NAMESPACE }}
-                key: ELASTIC_DATASERVICE_INDEX
-          - name: DATASERVICE_BASE_URI
+                key: ELASTIC_ACAT_INDEX
+          - name: DATASERVICE_HARVESTER_BASE_URI
             valueFrom:
               secretKeyRef:
                 name: commonurl-{{ required "Missing value NAMESPACE" .Values.NAMESPACE }}
