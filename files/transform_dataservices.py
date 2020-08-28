@@ -13,15 +13,16 @@ def transform(extract):
     print(len(array))
     transformed = {}
     for dataservice in array:
-        first = dataservice["_source"].get("harvest")["firstHarvested"]
-        dataservice2 = {"doc": {"id": dataservice["_id"],
-                                "harvest": {"firstHarvested": first,
-                                            "lastHarvested": dataservice["_source"].get("harvest")["lastHarvested"],
-                                            "changed": mapchanged(dataservice["_source"].get("harvest"), first)
-                                            }
-                                }
-                        }
-        transformed[dataservice["_source"].get("apiSpecUrl")] = dataservice2
+        if dataservice["_source"].get("serviceType") != "Kontoopplysninger":
+            first = dataservice["_source"].get("harvest")["firstHarvested"]
+            dataservice2 = {"doc": {"id": dataservice["_id"],
+                                    "harvest": {"firstHarvested": first,
+                                                "lastHarvested": dataservice["_source"].get("harvest")["lastHarvested"],
+                                                "changed": mapchanged(dataservice["_source"].get("harvest"), first)
+                                                }
+                                    }
+                            }
+            transformed[dataservice["_source"].get("apiSpecUrl")] = dataservice2
     print("Total to be transformed: ", len(transformed))
     return transformed
 
