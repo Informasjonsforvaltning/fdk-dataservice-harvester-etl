@@ -1,13 +1,10 @@
 .PHONY: test
 all: extract transform load
 
-fuseki:
-	echo "Extracting fusekidata...."
-	python3 ./extract_fusekidata.py -o ./tmp/
-
 extract:
-	echo "Extracting dataservices...."
+	echo "Extracting fusekidata and dataservices..."
 	python3 ./extract_dataservices.py -o ./tmp/
+	python3 ./extract_fusekidata.py -o ./tmp/
 
 transform:
 	echo "Transforming dataservices...."

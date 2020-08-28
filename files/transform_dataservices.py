@@ -34,7 +34,7 @@ def mapchanged(harvest, first):
 
 
 inputfileName = args.outputdirectory + "dataservices.json"
-outputfileName = args.outputdirectory + "dataservice_metadata.json"
+outputfileName = args.outputdirectory + "dataservices_metadata.json"
 with open(inputfileName) as json_file:
     data = json.load(json_file)
     # Transform the organization object to publihser format:
