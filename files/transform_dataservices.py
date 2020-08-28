@@ -13,13 +13,24 @@ def transform(data):
     print (len(array))
     transformed = {}
     for dataservice in array:
+        first = dataservice["_source"].get("harvest")["firstHarvested"]
         dataservice2 = {"doc": {"id": dataservice["_id"],
-                                "harvest": {"firstHarvested": dataservice["_source"].get("harvest")["firstHarvested"],
+                                "harvest": {"firstHarvested": first,
                                             "lastHarvested": dataservice["_source"].get("harvest")["lastHarvested"],
-                                            "changed": dataservice["_source"].get("harvest")["changed"]}}}
+                                            "changed": mapchanged(dataservice["_source"].get("harvest")["changed"], first)
+                                            }
+                                }
+                        }
         transformed[dataservice.get("apiSpecUrl")] = dataservice2
     print ("Total to be transformed: ", len(transformed))
     return transformed
+
+
+def mapchanged(changed, first):
+    array = []
+    if changed:
+        return changed
+    return array.append(first)
 
 
 inputfileName = args.outputdirectory + "dataservices.json"
