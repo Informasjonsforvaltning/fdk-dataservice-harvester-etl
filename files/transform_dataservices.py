@@ -14,7 +14,6 @@ def transform(data):
     transformed = {}
     for dataservice in array:
         dataservice2 = {"doc": {"id": dataservice["_id"],
-                                "uri": dataservice["_source"]["uri"],
                                 "harvest": {"firstHarvested": dataservice["_source"].get("harvest")["firstHarvested"],
                                             "lastHarvested": dataservice["_source"].get("harvest")["lastHarvested"],
                                             "changed": dataservice["_source"].get("harvest")["changed"]}}}
