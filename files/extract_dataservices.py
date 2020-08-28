@@ -10,7 +10,7 @@ args = parser.parse_args()
 
 data = json.loads('{"query":{"bool":{"must":[{"match_all":{}}],"must_not":[],"should":[]}},"from":0,"size":10000,"sort":[],"aggs":{}}')
 host = 'http://elasticsearch5:9200/'
-url = host + "/" + os.environ["ELASTIC_ACAT_INDEX"] + "/_search"
+url = host + os.environ["ELASTIC_ACAT_INDEX"] + "/_search"
 headers = {'Content-Type': 'application/json'}
 
 print("Posting to the following url: ", url)
