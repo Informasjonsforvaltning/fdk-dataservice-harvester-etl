@@ -7,29 +7,29 @@ parser.add_argument('-o', '--outputdirectory', help="the path to the directory o
 args = parser.parse_args()
 
 
-def transform(data):
+def transform(extract):
     # Transforming according to rules in README
-    array = data["hits"]["hits"]
-    print (len(array))
+    array = extract["hits"]["hits"]
+    print(len(array))
     transformed = {}
     for dataservice in array:
         first = dataservice["_source"].get("harvest")["firstHarvested"]
         dataservice2 = {"doc": {"id": dataservice["_id"],
                                 "harvest": {"firstHarvested": first,
                                             "lastHarvested": dataservice["_source"].get("harvest")["lastHarvested"],
-                                            "changed": mapchanged(dataservice["_source"].get("harvest")["changed"], first)
+                                            "changed": mapchanged(dataservice["_source"].get("harvest"), first)
                                             }
                                 }
                         }
         transformed[dataservice.get("apiSpecUrl")] = dataservice2
-    print ("Total to be transformed: ", len(transformed))
+    print("Total to be transformed: ", len(transformed))
     return transformed
 
 
-def mapchanged(changed, first):
+def mapchanged(harvest, first):
     array = []
-    if changed:
-        return changed
+    if harvest.get("changed"):
+        return harvest.get("changed")
     return array.append(first)
 
 
