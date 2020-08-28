@@ -12,9 +12,10 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-o', '--outputdirectory', help="the path to the directory of the output files", required=True)
 args = parser.parse_args()
 
+fuseki_extract = args.outputdirectory + "dataservices.ttl"
 
 dataservicesGraph = None
-with open("dataservices.ttl") as fuseki_file:
+with open(fuseki_extract) as fuseki_file:
     dataservicesGraph = Graph().parse(data=fuseki_file.read(), format='turtle')
 metabaseURI = os.environ['DATASERVICE_HARVESTER_BASE_URI'] + '/dataservices/'
 catalogrecordRef = URIRef("http://www.w3.org/ns/dcat#CatalogRecord")
