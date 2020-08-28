@@ -21,8 +21,7 @@ def transform(extract):
                                             }
                                 }
                         }
-        print(dataservice.get("apiSpecUrl"))
-        transformed[dataservice.get("apiSpecUrl")] = dataservice2
+        transformed[dataservice["_source"].get("apiSpecUrl")] = dataservice2
     print("Total to be transformed: ", len(transformed))
     return transformed
 
