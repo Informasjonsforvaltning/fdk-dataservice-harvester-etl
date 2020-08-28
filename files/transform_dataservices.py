@@ -28,10 +28,8 @@ def transform(extract):
 
 
 def mapchanged(harvest, first):
-    array = []
-    if harvest.get("changed"):
-        return harvest.get("changed")
-    return array.append(first)
+    array = harvest.get("changed") if harvest.get("changed") else []
+    return array if len(array) > 0 else array.append(first)
 
 
 inputfileName = args.outputdirectory + "dataservices.json"
