@@ -1,7 +1,7 @@
 .PHONY: test
 all: extract transform load
 
-fusekidata:
+fuseki:
 	echo "Extracting fusekidata...."
 	python3 ./extract_fusekidata.py -o ./tmp/
 

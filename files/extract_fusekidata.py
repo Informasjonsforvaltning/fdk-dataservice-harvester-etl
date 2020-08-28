@@ -15,4 +15,4 @@ print("Getting from the following url: ", url)
 # Load the publisher by posting the data:
 r = requests.get(url)
 with open(args.outputdirectory + 'dataservices.ttl', 'w', encoding="utf-8") as outfile:
-    json.dump(r.json(), outfile, ensure_ascii=False, indent=4)
+    outfile.writelines(r.text, outfile, ensure_ascii=False, indent=4)

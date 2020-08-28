@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - env:
-          - name: ELASTIC_DATASERVICE_INDEX
+          - name: ELASTIC_ACAT_INDEX
             valueFrom:
               secretKeyRef:
                 name: common-{{ required "Missing value NAMESPACE" .Values.NAMESPACE }}
