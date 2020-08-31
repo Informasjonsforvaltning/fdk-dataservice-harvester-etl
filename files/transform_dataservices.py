@@ -13,7 +13,7 @@ def transform(extract):
     print(len(array))
     transformed = {}
     for dataservice in array:
-        if dataservice["_source"].get("serviceType") != "Kontoopplysninger":
+        if dataservice["_source"].get("serviceType") != "Kontoopplysninger" and dataservice["_source"].get("apiSpecUrl"):
             first = dataservice["_source"].get("harvest")["firstHarvested"]
             dataservice2 = {"doc": {"id": dataservice["_id"],
                                     "harvest": {"firstHarvested": first,

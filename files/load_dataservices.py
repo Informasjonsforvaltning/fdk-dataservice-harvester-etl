@@ -63,16 +63,16 @@ with open(inputfileName) as json_file:
                     print("Response.status: " + str(response.status_code) + " -- " + endpointDescription.toPython())
                     if response.status_code == "201":
                         totalLoaded += 1
-                    try:
-                        response = requests.delete(
-                            fusekibaseURI + '?graph=' + old_identifier
-                        )
-                        response.raise_for_status()
-                        print("Delete response.status: " + str(response.status_code) + " -- " + endpointDescription.toPython())
-                    except requests.HTTPError as err:
-                        logging.error(f'Http delete error response from reference-data: ({err})')
-                    except Exception as err:
-                        logging.error(f"Error occured when deleting data from reference-data: ({err})")
+                        try:
+                            response = requests.delete(
+                                fusekibaseURI + '?graph=' + old_identifier
+                            )
+                            response.raise_for_status()
+                            print("Delete response.status: " + str(response.status_code) + " -- " + endpointDescription.toPython())
+                        except requests.HTTPError as err:
+                            logging.error(f'Http delete error response from reference-data: ({err})')
+                        except Exception as err:
+                            logging.error(f"Error occured when deleting data from reference-data: ({err})")
                 except requests.HTTPError as err:
                     logging.error(f"Http error response from reference-data: ({err})")
                 except Exception as err:
