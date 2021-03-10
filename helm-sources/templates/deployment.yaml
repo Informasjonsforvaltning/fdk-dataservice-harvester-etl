@@ -21,16 +21,8 @@ spec:
     spec:
       containers:
       - env:
-          - name: ELASTIC_ACAT_INDEX
-            valueFrom:
-              secretKeyRef:
-                name: common-{{ required "Missing value NAMESPACE" .Values.NAMESPACE }}
-                key: ELASTIC_ACAT_INDEX
-          - name: DATASERVICE_HARVESTER_BASE_URI
-            valueFrom:
-              secretKeyRef:
-                name: commonurl-{{ required "Missing value NAMESPACE" .Values.NAMESPACE }}
-                key: FDK_DATASERVICE_HARVESTER_BASE_URI
+          - name: TO_BE_UPDATED
+            value: {{ required "Missing value TO_BE_UPDATED" .Values.TO_BE_UPDATED | quote }}
         image: {{ required "Missing value DOCKER_IMAGE_NAME" .Values.DOCKER_IMAGE_NAME }}
         imagePullPolicy: Always
         name: fdk-dataservice-harvester-etl

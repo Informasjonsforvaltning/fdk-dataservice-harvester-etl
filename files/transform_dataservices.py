@@ -1,45 +1,52 @@
 import json
-
+import re
 import argparse
+from datetime import datetime
+import os
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-o', '--outputdirectory', help="the path to the directory of the output files", required=True)
 args = parser.parse_args()
+update_dates = os.environ["TO_BE_UPDATED"] == 'dates'
 
 
-def transform(extract):
-    # Transforming according to rules in README
-    array = extract["hits"]["hits"]
-    print(len(array))
+def transform(inputfile, inputfile_meta):
+
+    dataservices = openfile(inputfile)
+    dataservices_meta = openfile(inputfile_meta)
+
     transformed = {}
-    for dataservice in array:
-        if dataservice["_source"].get("serviceType") != "Kontoopplysninger" and dataservice["_source"].get("apiSpecUrl"):
-            first = dataservice["_source"].get("harvest")["firstHarvested"]
-            dataservice2 = {"doc": {"id": dataservice["_id"],
-                                    "harvest": {"firstHarvested": first,
-                                                "lastHarvested": dataservice["_source"].get("harvest")["lastHarvested"],
-                                                "changed": mapchanged(dataservice["_source"].get("harvest"), first)
-                                                }
-                                    }
-                            }
-            transformed[dataservice["_source"].get("apiSpecUrl")] = dataservice2
-    print("Total to be transformed: ", len(transformed))
+    failed = {}
+    failed_transform = args.outputdirectory + "failed_transform.json"
+    for dataservice in dataservices:
+        if dataservice["_id"] not in dataservices_meta:
+            failed_transform.append(dataservice["_id"])
+        else:
+            transformed[dataservice["_id"]] = fields_to_change(dataservice)
+
+    with open(failed_transform, 'w', encoding="utf-8") as failed_file:
+        json.dump(failed, failed_file, ensure_ascii=False, indent=4)
     return transformed
 
 
-def mapchanged(harvest, first):
-    array = harvest.get("changed") if harvest.get("changed") else []
-    if len(array) > 0:
-        return array
+def openfile(file_name):
+    with open(file_name) as json_file:
+        return json.load(json_file)
+
+
+def fields_to_change(dataservice):
+    if update_dates is True:
+        return {"issued": dataservice["issued"],
+                "modified": dataservice["modified"]}
     else:
-        array.append(first)
-        return array
+        return {"fdkId": dataservice["fdkId"]}
 
 
-inputfileName = args.outputdirectory + "dataservices.json"
-outputfileName = args.outputdirectory + "dataservices_metadata.json"
-with open(inputfileName) as json_file:
-    data = json.load(json_file)
-    # Transform the organization object to publihser format:
-    with open(outputfileName, 'w', encoding="utf-8") as outfile:
-        json.dump(transform(data), outfile, ensure_ascii=False, indent=4)
+inputfileName = args.outputdirectory + "mongo_dataservices.json"
+inputfileNameMeta = args.outputdirectory + "mongo_dataservices_meta.json"
+outputfileName = args.outputdirectory + "dataservices_transformed.json"
+
+
+with open(outputfileName, 'w', encoding="utf-8") as outfile:
+    json.dump(transform(inputfileName, inputfileNameMeta), outfile, ensure_ascii=False, indent=4)
