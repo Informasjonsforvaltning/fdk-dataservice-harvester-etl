@@ -9,9 +9,13 @@ transform:
 	echo "Transforming dataservices...."
 	python3 -u ./transform_dataservices.py -o ./tmp/
 
-load:
+load_dataservices:
 	echo "Loading dataservices...."
 	python3 ./load_dataservices.py -o ./tmp/
+
+load_catalogs:
+	echo "Loading catalogs...."
+	python3 ./load_catalogs.py -o ./tmp/
 
 clean:
 	rm ./tmp/*.json
