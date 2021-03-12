@@ -9,14 +9,13 @@ args = parser.parse_args()
 update_dates = os.environ["TO_BE_UPDATED"] == 'dates'
 
 
-def transform(inputfile, inputfile_meta):
+def transform(inputfile, inputfile_meta, failed_path):
 
     dataservices = openfile(inputfile)
     dataservices_meta = openfile(inputfile_meta)
 
     transformed = {}
     failed = {}
-    failed_path = args.outputdirectory + "failed_transform.json"
 
     for dataservice_key in dataservices:
         if dataservices[dataservice_key]["_id"] not in dataservices_meta:
@@ -46,12 +45,14 @@ def fields_to_change(dataservice):
 inputfileName = args.outputdirectory + "mongo_dataservices.json"
 inputfileNameMeta = args.outputdirectory + "mongo_dataservicesMeta.json"
 outputfileName = args.outputdirectory + "dataservices_transformed.json"
+failedfileName = args.outputdirectory + "failed_transform_dataservices.json"
 with open(outputfileName, 'w', encoding="utf-8") as outfile:
-    json.dump(transform(inputfileName, inputfileNameMeta), outfile, ensure_ascii=False, indent=4)
+    json.dump(transform(inputfileName, inputfileNameMeta, failedfileName), outfile, ensure_ascii=False, indent=4)
 
 # Catalogs
 inputfileName = args.outputdirectory + "mongo_catalogs.json"
 inputfileNameMeta = args.outputdirectory + "mongo_catalogsMeta.json"
 outputfileName = args.outputdirectory + "catalogs_transformed.json"
+failedfileName = args.outputdirectory + "failed_transform_catalogs.json"
 with open(outputfileName, 'w', encoding="utf-8") as outfile:
-    json.dump(transform(inputfileName, inputfileNameMeta), outfile, ensure_ascii=False, indent=4)
+    json.dump(transform(inputfileName, inputfileNameMeta, failedfileName), outfile, ensure_ascii=False, indent=4)
