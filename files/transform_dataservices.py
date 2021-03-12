@@ -43,7 +43,7 @@ def fields_to_change(dataservice):
 
 # Dataservices
 inputfileName = args.outputdirectory + "mongo_dataservices.json"
-inputfileNameMeta = args.outputdirectory + "mongo_dataservices_meta.json"
+inputfileNameMeta = args.outputdirectory + "mongo_dataservicesMeta.json"
 outputfileName = args.outputdirectory + "dataservices_transformed.json"
 with open(outputfileName, 'w', encoding="utf-8") as outfile:
     json.dump(transform(inputfileName, inputfileNameMeta), outfile, ensure_ascii=False, indent=4)
