@@ -2,7 +2,7 @@
 all: extract transform load
 
 extract:
-	echo "Extracting fusekidata and dataservices..."
+	echo "Extracting catalogs and dataservices..."
 	python3 ./extract_dataservices.py -o ./tmp/
 
 transform:

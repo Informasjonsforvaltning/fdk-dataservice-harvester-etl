@@ -44,7 +44,6 @@ db = connection.dataServiceHarvester
 dict_list = list(db.catalog.find())
 catalogs = []
 for id_dict in dict_list:
-    catalogs.append(id_dict)
     catalog = {}
     id_str = id_dict["_id"]
     fdkId_str = id_dict["fdkId"]
