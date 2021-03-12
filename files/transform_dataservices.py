@@ -16,14 +16,15 @@ def transform(inputfile, inputfile_meta):
 
     transformed = {}
     failed = {}
-    failed_transform = args.outputdirectory + "failed_transform.json"
+    failed_path = args.outputdirectory + "failed_transform.json"
+
     for dataservice_key in dataservices:
         if dataservices[dataservice_key]["_id"] not in dataservices_meta:
-            failed_transform.append(dataservices[dataservice_key]["_id"])
+            failed[dataservice_key] = (dataservices[dataservice_key]["_id"])
         else:
             transformed[dataservices[dataservice_key]["_id"]] = fields_to_change(dataservices[dataservice_key])
 
-    with open(failed_transform, 'w', encoding="utf-8") as failed_file:
+    with open(failed_path, 'w', encoding="utf-8") as failed_file:
         json.dump(failed, failed_file, ensure_ascii=False, indent=4)
     return transformed
 
