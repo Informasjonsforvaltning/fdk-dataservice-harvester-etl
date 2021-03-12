@@ -41,10 +41,16 @@ def fields_to_change(dataservice):
         return {"fdkId": dataservice["fdkId"]}
 
 
+# Dataservices
 inputfileName = args.outputdirectory + "mongo_dataservices.json"
 inputfileNameMeta = args.outputdirectory + "mongo_dataservices_meta.json"
 outputfileName = args.outputdirectory + "dataservices_transformed.json"
+with open(outputfileName, 'w', encoding="utf-8") as outfile:
+    json.dump(transform(inputfileName, inputfileNameMeta), outfile, ensure_ascii=False, indent=4)
 
-
+# Catalogs
+inputfileName = args.outputdirectory + "mongo_catalogs.json"
+inputfileNameMeta = args.outputdirectory + "mongo_catalogsMeta.json"
+outputfileName = args.outputdirectory + "catalogs_transformed.json"
 with open(outputfileName, 'w', encoding="utf-8") as outfile:
     json.dump(transform(inputfileName, inputfileNameMeta), outfile, ensure_ascii=False, indent=4)
