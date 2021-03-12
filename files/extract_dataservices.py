@@ -42,7 +42,7 @@ with open(args.outputdirectory + 'mongo_dataservicesMeta.json', 'w', encoding="u
 # Old catalogs
 db = connection.dataServiceHarvester
 dict_list = list(db.catalog.find())
-catalogs = []
+catalogs = {}
 for id_dict in dict_list:
     catalog = {}
     id_str = id_dict["_id"]
