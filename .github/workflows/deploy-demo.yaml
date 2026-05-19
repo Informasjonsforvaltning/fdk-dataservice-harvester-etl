@@ -11,15 +11,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@50fbc622fc4ef5163becd7fab6573eac35f8462e  # v1
 
     - name: Setup python environment
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@0f07f7f756721ebd886c2462646a35f78a8bc4de  # v1
       with:
           python-version: 3.7
 
     - name: Setup gcloud CLI
-      uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      uses: GoogleCloudPlatform/github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102  # master
       with:
         version: '270.0.0'
         service_account_email: ${{ secrets.GCP_SA_DIGDIR_FDK_GCR_EMAIL }}
@@ -34,7 +34,7 @@ jobs:
       run: docker -- push eu.gcr.io/digdir-fdk-infra/fdk-dataservice-harvester-etl
 
     - name: Apply Helm template
-      uses: stefanprodan/kube-tools@v1
+      uses: stefanprodan/kube-tools@0d241188296aee8e513e9597ba7eede46f6155ef  # v1.7.2
       with:
         helm: 2.14.3
         command: |
@@ -46,7 +46,7 @@ jobs:
           cat kubectlapply.yaml
 
     - name: Get kubeconfig file from GKE
-      uses: machine-learning-apps/gke-kubeconfig@master
+      uses: machine-learning-apps/gke-kubeconfig@89993c4e45e041a1432bc1676a4fa35ec3ec37c8  # master
       with:
         application_credentials: ${{ secrets.DIGDIR_FDK_DEV_AUTODEPLOY }}
         project_id: digdir-fdk-dev
@@ -54,7 +54,7 @@ jobs:
         cluster_name: digdir-fdk-dev
 
     - name: Deploy to staging
-      uses: docker://bitnami/kubectl:latest
+      uses: docker://bitnami/kubectl@sha256:3220dcc839f55be732a29548043a1ddf635a0dd6c8781b0f2a0bcdc19029c7d3  # latest
       env:
         KUBECONFIG: '/github/workspace/.kube/config'
       with:
