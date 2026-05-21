@@ -34,7 +34,7 @@ jobs:
         run: docker build . -t eu.gcr.io/digdir-fdk-infra/fdk-dataservice-harvester-etl:latest -t eu.gcr.io/digdir-fdk-infra/fdk-dataservice-harvester-etl:$GITHUB_SHA
 
       - name: Publish docker image to Google Cloud
-        run: docker -- push eu.gcr.io/digdir-fdk-infra/fdk-dataservice-harvester-etl
+        run: docker push --all-tags eu.gcr.io/digdir-fdk-infra/fdk-dataservice-harvester-etl
 
       - name: Apply Helm template
         uses: stefanprodan/kube-tools@0d241188296aee8e513e9597ba7eede46f6155ef  # v1.7.2
