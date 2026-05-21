@@ -21,12 +21,13 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Setup gcloud CLI
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@b94035a6aac71cdacf6e682bbbef2e927960f8ac  # master
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093  # v3.0.0
         with:
-          version: '569.0.0'
-          service_account_email: ${{ secrets.GCP_SA_DIGDIR_FDK_GCR_EMAIL }}
-          service_account_key: ${{ secrets.GCP_SA_DIGDIR_FDK_GCR_KEY }}
+          credentials_json: ${{ secrets.GCP_SA_DIGDIR_FDK_GCR_KEY }}
+
+      - name: Setup gcloud CLI
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db  # v3.0.1
 
       - run: gcloud auth configure-docker
 
