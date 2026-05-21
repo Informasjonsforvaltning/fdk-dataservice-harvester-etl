@@ -16,7 +16,7 @@ jobs:
       - name: Setup python environment
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405  # v6.2.0
         with:
-          python-version: 3.7
+          python-version: '3.12'
 
       - name: Setup gcloud CLI
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@b94035a6aac71cdacf6e682bbbef2e927960f8ac  # master
