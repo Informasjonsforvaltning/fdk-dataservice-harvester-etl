@@ -21,7 +21,7 @@ jobs:
     - name: Setup gcloud CLI
       uses: GoogleCloudPlatform/github-actions/setup-gcloud@b94035a6aac71cdacf6e682bbbef2e927960f8ac  # master
       with:
-        version: '270.0.0'
+        version: '569.0.0'
         service_account_email: ${{ secrets.GCP_SA_DIGDIR_FDK_GCR_EMAIL }}
         service_account_key: ${{ secrets.GCP_SA_DIGDIR_FDK_GCR_KEY }}
 
