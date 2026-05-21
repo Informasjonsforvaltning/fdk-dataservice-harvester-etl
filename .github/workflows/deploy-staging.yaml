@@ -19,7 +19,7 @@ jobs:
           python-version: 3.7
 
     - name: Setup gcloud CLI
-      uses: GoogleCloudPlatform/github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102  # master
+      uses: GoogleCloudPlatform/github-actions/setup-gcloud@b94035a6aac71cdacf6e682bbbef2e927960f8ac  # master
       with:
         version: '270.0.0'
         service_account_email: ${{ secrets.GCP_SA_DIGDIR_FDK_GCR_EMAIL }}
